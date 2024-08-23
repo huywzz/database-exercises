@@ -1,0 +1,97 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+
+Table Member {
+  member_id integer [primary key]
+  member_card_number varchar
+  firstname varchar
+  lastname varchar
+  email varchar
+  phone varchar
+  address varchar
+  created_at timestamp
+  updated_at timestamp
+}
+Table Book{
+  book_id integer [primary key]
+  author_id integer 
+  category_id integer
+  book_name varchar
+  author varchar
+  published_year integer
+  deposit float
+  total_copie interger
+  available_copies integer
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table Borrows{
+  brorrow_id integer [primary key]
+  user_id integer 
+  book_id integer 
+  borrow_date date
+  due_date date
+  employee_id integer
+  return_date date
+  status enum('BRORROWING','PAID','OVERDUE ')
+}
+
+Table Fines{
+  fines_id integer [primary key]
+  user_id integer 
+  brorrow_id integer
+  amount float
+  fine_date date
+  status enum(unpaid, paid )
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table Author{
+  author_id integer [primary key]
+}
+
+Table Author_Book{
+  author_id integer [primary key]
+  book_id integer [primary key]
+}
+
+Table Publisher{
+  publisher_id integer [primary key]
+  name_publiser varchar
+  address varchar
+  phone varchar
+}
+Table Categories{
+  category_id integer [primary key]
+  name_category varchar
+}
+
+Table Employee{
+  employee_id integer [primary key]
+  username varchar
+  password varchar
+  firstname varchar
+  lastname varchar
+  email varchar
+  phone varchar
+  address varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Ref: Borrows.user_id > Member.member_id
+Ref: Borrows.book_id > Book.book_id
+Ref: Fines.fines_id > Member.member_id
+Ref: Fines.fines_id >  Borrows.book_id
+Ref: Book.author_id > Categories.category_id
+Ref: Book.author_id > Publisher.publisher_id
+
+Ref: "Author"."author_id" < "Author_Book"."author_id"
+
+Ref: "Book"."book_id" < "Author_Book"."book_id"
+
+
+Ref: "Employee"."employee_id" < "Borrows"."employee_id"
